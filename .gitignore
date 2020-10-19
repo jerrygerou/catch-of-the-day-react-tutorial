@@ -4,3 +4,6 @@ node_modules/
 .idea
 notes.md
 catch-of-the-day/build/
+
+npm-debug.log
+.json
