@@ -8,6 +8,8 @@ class EditFishForm extends React.Component {
             ...this.props.fish,
             [event.currentTarget.name]: event.currentTarget.value
         };
+        // sexily updated currentTarget by using the name assigned in tag
+        // using method in App.js passed as props
         this.props.updateFish(this.props.index, updatedFish);
     }
 
@@ -22,6 +24,7 @@ class EditFishForm extends React.Component {
                 </select>
                 <textarea name="desc" onChange={this.handleChange} value={this.props.fish.desc} />
                 <input type="text" name="image" onChange={this.handleChange} value={this.props.fish.image} />
+                <button onClick={() => this.props.deleteFish(this.props.index)}>Remove Fish</button>
             </div>
         );
     }
