@@ -4,8 +4,11 @@ import { formatPrice } from "../helpers";
 class Order extends React.Component {
     renderOrder = key => {
         const fish = this.props.fishes[key];
+        // Make sure the fish have loaded otherwise Order will fail
+        if (!fish) return null;
         const count = this.props.order[key];
         const isAvailable = fish.status === "available";
+
         if (!isAvailable) {
             return (
                 <li key={key}>
