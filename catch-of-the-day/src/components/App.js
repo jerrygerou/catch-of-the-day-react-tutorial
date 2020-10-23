@@ -23,18 +23,18 @@ class App extends React.Component {
             context: this,
             state: 'fishes'
         });
-    }
+    };
 
     componentDidUpdate() {
         localStorage.setItem(
             this.props.match.params.storeId, 
             JSON.stringify(this.state.order)
         );
-    }
+    };
 
     componentWillUnmount() {
         base.removeBinding(this.ref);
-    }
+    };
 
     addFish = fish => {
         // Take a copy of existing state
@@ -54,21 +54,49 @@ class App extends React.Component {
         fishes[key] = updatedFish;
         // Set that to state
         this.setState({ fishes });
-    }
+    };
+
+    deleteFish = key => {
+        // Take a copy of existing state of fishes
+        const fishes = { ...this.state.fishes };
+        // Update that state
+        // using Firebase, we cannot just call .delete, must set to null
+        fishes[key] = null;
+        // Set the state
+        this.setState({ fishes });
+    };
 
     loadSampleFishes = () => {
         this.setState({ fishes: sampleFishes });
     };
 
-    addToOrder = (key) => {
+    addToOrder = key => {
         // Take a copy of existing state
         const order = { ...this.state.order };
         // Either add to order or update number in order
         order[key] = order[key] + 1 || 1;
         // Set order state
-        this.setState({
-            order: order
-        })
+        this.setState({ order: order })
+    };
+
+    subtractFromOrder = key => {
+        // Take a copy of existing state
+        const order = { ...this.state.order };
+        // If exists, subtract one
+        if (order[key]) {
+            order[key] = order[key] - 1;
+        }
+        // Set order state
+        this.setState({ order: order })
+    };
+
+    removeFromOrder = key => {
+        // Take a copy of existing state
+        const order = { ...this.state.order };
+        // Since we don't care if this persists in firebase, just delete
+        delete order[key];
+        // Set order state
+        this.setState({ order: order })
     };
 
     render() {
@@ -83,6 +111,7 @@ class App extends React.Component {
                                 index={key}
                                 details={this.state.fishes[key]} 
                                 addToOrder={this.addToOrder}
+                                subtractFromOrder={this.subtractFromOrder}
                             />
                         ))}
                     </ul>
@@ -90,10 +119,12 @@ class App extends React.Component {
                 <Order 
                     fishes={this.state.fishes} 
                     order={this.state.order}
+                    removeFromOrder={this.removeFromOrder}
                 />
                 <Inventory 
                     addFish={this.addFish} 
                     updateFish={this.updateFish}
+                    deleteFish={this.deleteFish}
                     loadSampleFishes={this.loadSampleFishes}
                     fishes={this.state.fishes}
                 />
