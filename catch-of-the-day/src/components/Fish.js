@@ -13,7 +13,8 @@ class Fish extends React.Component {
                 PropTypes.string,
                 PropTypes.number
             ]),
-        addToOrder: PropTypes.func
+        addToOrder: PropTypes.func,
+        subtractFromOrder: PropTypes.func
        })
     };
     render() {
